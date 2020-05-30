@@ -1,24 +1,36 @@
+// pull input from dom
 const form = document.getElementById("form");
 const username = document.getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
+/**
+ * takes html element and error output, updates dom to reflect error message underneath element
+ * @param {html element} input
+ * @param {string} message
+ */
 function showError(input, message) {
-  //outline input with red
-
+  // move up to parent element then add error css class
   const formControl = input.parentElement;
   formControl.className = "form-control error";
   const small = formControl.querySelector("small");
   small.innerText = message;
 }
 
+/**
+ * updates class name to reflect successfull input
+ * @param {html element} input
+ */
 function showSuccess(input) {
   const formControl = input.parentElement;
   formControl.className = "form-control success";
 }
 
-//check email is valid
+/**
+ * test for correct email configuration (foo@bar.com) adjust dom pending check
+ * @param {email Html element} email
+ */
 const isValidEmail = (email) => {
   // regex for testing email configuration
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -29,7 +41,10 @@ const isValidEmail = (email) => {
     showError(email, "Email is not valid");
   }
 };
-
+/**
+ * checks for empty input
+ * @param {html el array} inputArr
+ */
 const checkRequired = (inputArr) => {
   inputArr.forEach((el) => {
     if (el.value.trim() === "") {
@@ -39,7 +54,10 @@ const checkRequired = (inputArr) => {
     }
   });
 };
-//
+/**
+ * string formatting - returns element id as string with first char capitalized
+ * @param {html element} input
+ */
 const getFieldName = (input) => {
   if (input.id === "password2") {
     return "Password";
@@ -47,6 +65,12 @@ const getFieldName = (input) => {
   return input.id.charAt(0).toUpperCase() + input.id.slice(1); //remove first char, make it uppercase, join back to original string
 };
 
+/**
+ * checks length of html element input against min/max value
+ * @param {html element} el
+ * @param {number} min
+ * @param {number} max
+ */
 const checkLength = (el, min, max) => {
   if (el.value.length < min) {
     showError(el, `${getFieldName(el)} must be at least ${min} characters`);
@@ -57,6 +81,11 @@ const checkLength = (el, min, max) => {
   }
 };
 
+/**
+ * checks if password and password confirmation match
+ * @param {html el} pass1
+ * @param {html el} pass2
+ */
 const checkPasswords = (pass1, pass2) => {
   if (pass1.value !== pass2.value) {
     showError(pass2, "Passwords do not match");
